@@ -27,8 +27,14 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonUnderstand.setOnClickListener {
-
+            //5.1 Вызвов функции открытия фрагмента
+            launchChooseLevelFragment()
         }
+    }
+
+    //5.1 Создать функцию переключения экрана(добавить в бэкстэк, чтобы при нажатии кнопки назад закрывался только этот фрагмент)
+    private fun launchChooseLevelFragment() {
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.main_container, ChooseLevelFragment.newInstance()).addToBackStack(ChooseLevelFragment.NAME).commit()
     }
 
     override fun onDestroyView() {
