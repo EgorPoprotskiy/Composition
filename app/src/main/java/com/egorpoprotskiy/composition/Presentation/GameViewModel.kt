@@ -13,7 +13,7 @@ import com.egorpoprotskiy.composition.Domain.entity.Question
 import com.egorpoprotskiy.composition.Domain.usecases.GenerateQuestionUseCase
 import com.egorpoprotskiy.composition.Domain.usecases.GetGameSettingsUseCase
 import com.egorpoprotskiy.composition.R
-//Наследование от AndroidViewModel для того, чтобы можно было получиться строку из строковых ресурсов в методе updateProgress()
+//Наследование от AndroidViewModel для того, чтобы можно было получить строку из строковых ресурсов в методе updateProgress()
 class GameViewModel(application: Application): AndroidViewModel(application) {
     //7 Переменная для сохранения настроек игры
     private lateinit var gameSettings: GameSettings
@@ -84,6 +84,8 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
         startTimer()
         //генерация вопроса
         generateQuestion()
+        //Обновление прогресса
+        updateProgress()
     }
 
     //7 В этот метод будет передаваться выбранный вариант ответа
@@ -118,6 +120,9 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
     }
     //7 Метод получения процента правильных ответов
     private fun calculatePercentOfRightAnswers(): Int {
+        if (countOfQuestions == 0) {
+            return 0
+        }
         return ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
     }
 
