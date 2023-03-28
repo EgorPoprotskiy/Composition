@@ -13,7 +13,7 @@ data class GameResult(
     //количество правильных ответов
     val countOfRightAnswers: Int,
     //общее количество вопросов, на которые ответил пользователь
-    val countQuestions: Int,
+    val countOfQuestions: Int,
     //настройки игры
     val gameSettings: GameSettings
 ): Parcelable
