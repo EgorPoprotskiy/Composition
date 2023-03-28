@@ -1,11 +1,15 @@
 package com.egorpoprotskiy.composition.Presentation
 
+import android.content.res.ColorStateList
 import android.media.MediaFormat.KEY_LEVEL
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.egorpoprotskiy.composition.Domain.entity.GameResult
 import com.egorpoprotskiy.composition.Domain.entity.GameSettings
 import com.egorpoprotskiy.composition.Domain.entity.Level
@@ -15,6 +19,20 @@ import com.egorpoprotskiy.composition.databinding.FragmentGameBinding
 class GameFragment : Fragment() {
     //5.2 переменная для хранения уровня
     private lateinit var level: Level
+    private val viewModel by lazy {
+        ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[GameViewModel::class.java]
+    }
+    //8.1 Все варианты ответов записать в список, чтобы с ними можно было работать в цикле
+    private val tvOptions by lazy {
+        mutableListOf<TextView>().apply {
+            add(binding.tvOption1)
+            add(binding.tvOption2)
+            add(binding.tvOption3)
+            add(binding.tvOption4)
+            add(binding.tvOption5)
+            add(binding.tvOption6)
+        }
+    }
 
     //4.4  создать нулабельную ссылку на объект binding
     private var _binding: FragmentGameBinding? = null
@@ -38,9 +56,69 @@ class GameFragment : Fragment() {
     //5.3 Вызвать эту функцию на слушателе кликов
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.tvLeftNumber.setOnClickListener {
-            launchGameFinishedFragment(GameResult(true, 12,23, GameSettings(9,9,9,9)))
+        //Вызов функции, в которой подписывались на все объекты LiveData
+        observeViewModel()
+        //8.4 Вызов функции слушателя кликов
+        setClickListenersToOption()
+        //8.3 Старт игры из ViewModel
+        viewModel.startGame(level)
+    }
+    //8.4 СЛушатель кликов на варианты ответов
+    private fun setClickListenersToOption() {
+        for (tvOption in tvOptions) {
+            tvOption.setOnClickListener {
+                viewModel.shooseAnswer(tvOption.text.toString().toInt())
+            }
         }
+    }
+    //8.2 Подписываемся на все объекты LiveData
+    private fun observeViewModel() {
+        //Запись вариантов ответа в текст
+        viewModel.question.observe(viewLifecycleOwner){
+            binding.tvSum.text = it.sum.toString()
+            binding.tvLeftNumber.text = it.visibleNumber.toString()
+            for (i in 0 until tvOptions.size) {
+                tvOptions[i].text = it.options[i].toString()
+            }
+        }
+        //Процент правильных ответов(в прогрессБаре)
+        viewModel.percenOfRightAnswers.observe(viewLifecycleOwner) {
+            binding.progressBar.setProgress(it, true)
+        }
+        //Установка цвета в тексте
+        viewModel.enoughCount.observe(viewLifecycleOwner) {
+            binding.tvAnswerProgress.setTextColor(getColorByState(it))
+        }
+        //Установка цвета в прогресс баре
+        viewModel.enoughPercent.observe(viewLifecycleOwner) {
+            val color = getColorByState(it)
+            binding.progressBar.progressTintList = ColorStateList.valueOf(color)
+        }
+        //Подписываемся на время
+        viewModel.formattedTime.observe(viewLifecycleOwner) {
+            binding.tvTimer.text = it
+        }
+        //Подписываемя на минимальный процент
+        viewModel.minPercent.observe(viewLifecycleOwner) {
+            binding.progressBar.secondaryProgress = it
+        }
+        //Подписываемся на gameResult
+        viewModel.gameResult.observe(viewLifecycleOwner) {
+            launchGameFinishedFragment(it)
+        }
+        //прогресс правильных ответов(в штуках)
+        viewModel.progressAnswers.observe(viewLifecycleOwner) {
+            binding.tvAnswerProgress.text = it
+        }
+    }
+    // Функция определения цвета состояния(если состояние Хорошее, то цвет зеленый, иначе - красный)
+    private fun getColorByState(goodState: Boolean): Int {
+        val colorResId = if (goodState) {
+            android.R.color.holo_green_light
+        } else {
+            android.R.color.holo_red_light
+        }
+        return ContextCompat.getColor(requireContext(), colorResId)
     }
 
     //5.3 Создание фугнкции переключения экрана
