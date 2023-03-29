@@ -19,8 +19,12 @@ import com.egorpoprotskiy.composition.databinding.FragmentGameBinding
 class GameFragment : Fragment() {
     //5.2 переменная для хранения уровня
     private lateinit var level: Level
+    //10.8 изменить ленивую инициализацию viewModel
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
+    }
     private val viewModel by lazy {
-        ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[GameViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
     //8.1 Все варианты ответов записать в список, чтобы с ними можно было работать в цикле
     private val tvOptions by lazy {
@@ -60,8 +64,8 @@ class GameFragment : Fragment() {
         observeViewModel()
         //8.4 Вызов функции слушателя кликов
         setClickListenersToOption()
-        //8.3 Старт игры из ViewModel
-        viewModel.startGame(level)
+//        //8.3 Старт игры из ViewModel
+//        viewModel.startGame(level)
     }
     //8.4 СЛушатель кликов на варианты ответов
     private fun setClickListenersToOption() {

@@ -5,6 +5,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.egorpoprotskiy.composition.Data.GameRepositoryImpl
 import com.egorpoprotskiy.composition.Domain.entity.GameResult
 import com.egorpoprotskiy.composition.Domain.entity.GameSettings
@@ -14,14 +15,17 @@ import com.egorpoprotskiy.composition.Domain.usecases.GenerateQuestionUseCase
 import com.egorpoprotskiy.composition.Domain.usecases.GetGameSettingsUseCase
 import com.egorpoprotskiy.composition.R
 //Наследование от AndroidViewModel для того, чтобы можно было получить строку из строковых ресурсов в методе updateProgress()
-class GameViewModel(application: Application): AndroidViewModel(application) {
+class GameViewModel(
+    //10 Передаем application и level в качестве параметров в конструктов. Также изменить наследование от VIewModel
+    private val application: Application, private val level: Level
+): ViewModel() {
     //7 Переменная для сохранения настроек игры
     private lateinit var gameSettings: GameSettings
-    //7 Переменная для сохранения уровня игры
-    private lateinit var level: Level
-
-    // Переменная для метода updateProgress()
-    private val context = application
+//    //7 Переменная для сохранения уровня игры
+//    private lateinit var level: Level
+//
+//    // Переменная для метода updateProgress()
+//    private val context = application
 
     //7 Репозиторий для useCase
     private val repository = GameRepositoryImpl
@@ -76,10 +80,16 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
     //количество вопросов
     private var countOfQuestions = 0
 
+    //10.5 Инициализируем startGame в init - блоке
+    init {
+        startGame()
+    }
+
     //7 Метод будет вызываться из фрагмента
-    fun startGame(level: Level) {
+    //10.4 Делаем метод private и убираем параметр level
+    private fun startGame() {
         //получение настроек игры
-        getGameSettings(level)
+        getGameSettings()
         //запуск таймера
         startTimer()
         //генерация вопроса
@@ -107,7 +117,8 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
         //Сохранение в переменную строки с прогрессам по ответам
         _progressAnswers.value = String.format(
             //Чтобы получить строковый ресурс, нужен context(для этого класс должен наследоваться от AndroidViewModel)
-            context.resources.getString(R.string.progress_answers),
+            //10.2 Вместо  context вставляем application
+            application.resources.getString(R.string.progress_answers),
             //передаем количество правильных ответов
             countOfRightAnswers,
             //передаем минимальное коичество правильных ответов до победы
@@ -142,8 +153,8 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
     }
 
     //7 Получение настроек игры(уровня)
-    private fun getGameSettings(level: Level) {
-        this.level = level
+    //10.3 Удаляем level из конструктора и удаляем его присваивание
+    private fun getGameSettings() {
         this.gameSettings = getGameSettingsUseCase(level)
         //присвивание значения переменной из gameSetting
         _minPercent.value = gameSettings.minPercentOfRightAnswers
