@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.egorpoprotskiy.composition.Domain.entity.GameResult
 import com.egorpoprotskiy.composition.Domain.entity.GameSettings
 import com.egorpoprotskiy.composition.Domain.entity.Level
@@ -17,11 +19,14 @@ import com.egorpoprotskiy.composition.R
 import com.egorpoprotskiy.composition.databinding.FragmentGameBinding
 
 class GameFragment : Fragment() {
+    //12.3 Принимает аргументы из ChooseLevelFragment
+    private val args by navArgs<GameFragmentArgs>()
     //5.2 переменная для хранения уровня
-    private lateinit var level: Level
+//    private lateinit var level: Level
     //10.8 изменить ленивую инициализацию viewModel
+    //12.3 Вставляем полученные аргументы
     private val viewModelFactory by lazy {
-        GameViewModelFactory(level, requireActivity().application)
+        GameViewModelFactory(args.level, requireActivity().application)
     }
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
@@ -43,10 +48,10 @@ class GameFragment : Fragment() {
     private val binding: FragmentGameBinding
         get() = _binding ?: throw java.lang.RuntimeException("FragmentGameBinding == null")
     //5.2 Вызов этой функции в методе onCreate()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        parseArgs()
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -127,7 +132,8 @@ class GameFragment : Fragment() {
 
     //5.3 Создание фугнкции переключения экрана
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult)).addToBackStack(null).commit()
+        //12.2 Указать навигацию и параметры, которые надо передать
+        findNavController().navigate(GameFragmentDirections.actionGameFragmentToGameFinishedFragment(gameResult))
     }
 
     override fun onDestroyView() {
@@ -136,23 +142,23 @@ class GameFragment : Fragment() {
         _binding = null
     }
     //5.2 получение аргументов
-    private fun parseArgs() {
-        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
-            level = it
-        }
-    }
+//    private fun parseArgs() {
+//        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
+//            level = it
+//        }
+//    }
     //5.2 Создать фабричный метод в GameFragment, который в качестве параметра принимает уровень
     // (putSerializable - т.к. Level - это перечисление enum и наследуется от интерфейса Serializable)
-    companion object {
-        //5.5 Указать константу для перехода. Указывать в том фрагмента, в который нам надо перейти.
-        const val NAME = "GameFragment"
-        private const val KEY_LEVEL = "level"
-        fun newInstance(level: Level): GameFragment {
-            return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_LEVEL, level)
-                }
-            }
-        }
-    }
+//    companion object {
+//        //5.5 Указать константу для перехода. Указывать в том фрагмента, в который нам надо перейти.
+//        const val NAME = "GameFragment"
+//        const val KEY_LEVEL = "level"
+//        fun newInstance(level: Level): GameFragment {
+//            return GameFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelable(KEY_LEVEL, level)
+//                }
+//            }
+//        }
+//    }
 }

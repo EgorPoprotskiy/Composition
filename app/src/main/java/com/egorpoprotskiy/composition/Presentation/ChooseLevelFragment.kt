@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.egorpoprotskiy.composition.Domain.entity.Level
 import com.egorpoprotskiy.composition.R
 import com.egorpoprotskiy.composition.databinding.FragmentChooseLevelBinding
@@ -44,7 +46,8 @@ class ChooseLevelFragment : Fragment() {
     }
     //5.2 Создание фугнкции переключения экрана
     private fun launchGameFragment(level: Level) {
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.main_container, GameFragment.newInstance(level)).addToBackStack(GameFragment.NAME).commit()
+        //12.2 Указать навигацию и параметры, которые надо передать
+        findNavController().navigate(ChooseLevelFragmentDirections.actionChooseLevelFragmentToGameFragment(level))
     }
 
     override fun onDestroyView() {
@@ -53,11 +56,11 @@ class ChooseLevelFragment : Fragment() {
         _binding = null
     }
     //5.1 Создать фабричный метод
-    companion object {
-        //5.4 Создать константу дле перехода на этот фрагмент
-        const val NAME = "ShooseLevelFragment"
-        fun newInstance(): ChooseLevelFragment {
-            return ChooseLevelFragment()
-        }
-    }
+//    companion object {
+//        //5.4 Создать константу дле перехода на этот фрагмент
+//        const val NAME = "ShooseLevelFragment"
+//        fun newInstance(): ChooseLevelFragment {
+//            return ChooseLevelFragment()
+//        }
+//    }
 }

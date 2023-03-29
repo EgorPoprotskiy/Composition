@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.egorpoprotskiy.composition.Domain.entity.GameResult
 import com.egorpoprotskiy.composition.R
 import com.egorpoprotskiy.composition.databinding.FragmentGameFinishedBinding
 
 class GameFinishedFragment : Fragment() {
-    private lateinit var gameResult: GameResult
+    //12.3 Принимает аргументы из GameFragment
+    private val args by navArgs<GameFinishedFragmentArgs>()
+//    private lateinit var gameResult: GameResult
     //4.4  создать нулабельную ссылку на объект binding
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
@@ -27,10 +31,10 @@ class GameFinishedFragment : Fragment() {
         return binding.root
     }
     //5.3 Вызов этой функции в методе onCreate()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        parseArgs()
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        parseArgs()
+//    }
     override fun onDestroyView() {
         super.onDestroyView()
         //4.4 В фрагментах указывать _binding = null
@@ -46,12 +50,6 @@ class GameFinishedFragment : Fragment() {
     }
     //9.1 Слушатель кликов на перезапуск игры
     private fun setupOnClickListeners() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                retryGame()
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         binding.buttonRetry.setOnClickListener {
             retryGame()
 
@@ -64,24 +62,25 @@ class GameFinishedFragment : Fragment() {
             emojiResult.setImageResource(getSmileResId())
             //установка текстов
             tvRequiredAnswers.text = String.format(getString(R.string.required_score),
-                gameResult.gameSettings.minCountOfRightAnswers)
+                //12.4 Получение аргументов из GameFragment
+                args.gameResult.gameSettings.minCountOfRightAnswers)
             tvScoreAnswers.text = String.format(getString(R.string.score_answer),
-                gameResult.countOfRightAnswers)
+                args.gameResult.countOfRightAnswers)
             tvRequiredPercentage.text = String.format(getString(R.string.reauired_percentage),
-                gameResult.gameSettings.minPercentOfRightAnswers)
+                args.gameResult.gameSettings.minPercentOfRightAnswers)
             tvScorePercentage.text = String.format(getString(R.string.score_percentage), getPercentOfRightAnswers())
         }
     }
     //9.3 Выбор смайлика, грустный или довольный
     private fun getSmileResId(): Int {
-        return if (gameResult.winner) {
+        return if (args.gameResult.winner) {
             R.drawable.smile
         } else {
             R.drawable.smile_sad
         }
     }
     //9.4 Метод, возвращающий процент правильных ответов
-    private fun getPercentOfRightAnswers() = with(gameResult) {
+    private fun getPercentOfRightAnswers() = with(args.gameResult) {
         if (countOfQuestions == 0) {
             0
         } else {
@@ -89,27 +88,27 @@ class GameFinishedFragment : Fragment() {
         }
     }
     //5.3 Получение аргументов
-    private fun parseArgs() {
-        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
-            gameResult = it
-        }
-    }
+//    private fun parseArgs() {
+//        requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
+//            gameResult = it
+//        }
+//    }
     //5.4 Функция, возвращающая нас не на предыдущий экран, а на фрагмент выбора уровня сложности
     //5.5 Это второй способ, Чтобы вернуться на предпредыдущий фрагмент, удавлив при этом предыдущий
     private fun retryGame() {
-        requireActivity().supportFragmentManager.popBackStack(GameFragment.NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE )
+        findNavController().popBackStack()
     }
 
     //5.3 Создать фабричный метод в GameFinishedFragment, который в качестве параметра принимает
     // gameResult(putSerializable - т.к. GameResult наследуется от интерфейса Serializable)
-    companion object {
-        private const val KEY_GAME_RESULT = "game_result"
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(KEY_GAME_RESULT, gameResult)
-                }
-            }
-        }
-    }
+//    companion object {
+//        const val KEY_GAME_RESULT = "game_result"
+//        fun newInstance(gameResult: GameResult): GameFinishedFragment {
+//            return GameFinishedFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelable(KEY_GAME_RESULT, gameResult)
+//                }
+//            }
+//        }
+//    }
 }
