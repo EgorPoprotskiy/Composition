@@ -39,6 +39,13 @@ class GameFinishedFragment : Fragment() {
     //5.4 Переход на нужный фрагмент с помощью кнопки назад
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //9.1 Вызов перезапуска игры
+        setupOnClickListeners()
+        //9.2 Вызов метода установки значений
+        bindViews()
+    }
+    //9.1 Слушатель кликов на перезапуск игры
+    private fun setupOnClickListeners() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 retryGame()
@@ -47,9 +54,40 @@ class GameFinishedFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         binding.buttonRetry.setOnClickListener {
             retryGame()
+
         }
     }
-
+    //9.2 Создать метод, в котором устанавливаем значения
+    private fun bindViews() {
+        with(binding) {
+            //установка картинки
+            emojiResult.setImageResource(getSmileResId())
+            //установка текстов
+            tvRequiredAnswers.text = String.format(getString(R.string.required_score),
+                gameResult.gameSettings.minCountOfRightAnswers)
+            tvScoreAnswers.text = String.format(getString(R.string.score_answer),
+                gameResult.countOfRightAnswers)
+            tvRequiredPercentage.text = String.format(getString(R.string.reauired_percentage),
+                gameResult.gameSettings.minPercentOfRightAnswers)
+            tvScorePercentage.text = String.format(getString(R.string.score_percentage), getPercentOfRightAnswers())
+        }
+    }
+    //9.3 Выбор смайлика, грустный или довольный
+    private fun getSmileResId(): Int {
+        return if (gameResult.winner) {
+            R.drawable.smile
+        } else {
+            R.drawable.smile_sad
+        }
+    }
+    //9.4 Метод, возвращающий процент правильных ответов
+    private fun getPercentOfRightAnswers() = with(gameResult) {
+        if (countOfQuestions == 0) {
+            0
+        } else {
+            ((countOfRightAnswers / countOfQuestions.toDouble()) * 100).toInt()
+        }
+    }
     //5.3 Получение аргументов
     private fun parseArgs() {
         requireArguments().getParcelable<GameResult>(KEY_GAME_RESULT)?.let {
