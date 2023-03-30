@@ -1,9 +1,9 @@
-package com.egorpoprotskiy.composition.Presentation
+package com.egorpoprotskiy.composition.presentation
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.egorpoprotskiy.composition.Domain.entity.Level
+import com.egorpoprotskiy.composition.domain.entity.Level
 
 //10.7 Создать ViewModelFactory
 class GameViewModelFactory(

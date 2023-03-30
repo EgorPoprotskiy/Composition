@@ -1,8 +1,7 @@
-package com.egorpoprotskiy.composition.Domain.usecases
+package com.egorpoprotskiy.composition.domain.usecases
 
-import com.egorpoprotskiy.composition.Domain.GameRepository
-import com.egorpoprotskiy.composition.Domain.entity.GameSettings
-import com.egorpoprotskiy.composition.Domain.entity.Question
+import com.egorpoprotskiy.composition.domain.GameRepository
+import com.egorpoprotskiy.composition.domain.entity.Question
 
 //3.2 Т.к. useCase делает что-то одно, то нет смысла создавать функцию с таким же именем.
 // Для этого просто переопределяют оператор invoke(), чтобы useCase можно было вызывать как метод

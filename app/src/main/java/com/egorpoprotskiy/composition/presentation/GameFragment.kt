@@ -1,7 +1,6 @@
-package com.egorpoprotskiy.composition.Presentation
+package com.egorpoprotskiy.composition.presentation
 
 import android.content.res.ColorStateList
-import android.media.MediaFormat.KEY_LEVEL
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.egorpoprotskiy.composition.Domain.entity.GameResult
-import com.egorpoprotskiy.composition.Domain.entity.GameSettings
-import com.egorpoprotskiy.composition.Domain.entity.Level
-import com.egorpoprotskiy.composition.R
+import com.egorpoprotskiy.composition.domain.entity.GameResult
 import com.egorpoprotskiy.composition.databinding.FragmentGameBinding
 
 class GameFragment : Fragment() {

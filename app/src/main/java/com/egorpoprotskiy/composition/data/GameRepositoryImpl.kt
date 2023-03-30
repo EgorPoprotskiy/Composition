@@ -1,9 +1,9 @@
-package com.egorpoprotskiy.composition.Data
+package com.egorpoprotskiy.composition.data
 
-import com.egorpoprotskiy.composition.Domain.GameRepository
-import com.egorpoprotskiy.composition.Domain.entity.GameSettings
-import com.egorpoprotskiy.composition.Domain.entity.Level
-import com.egorpoprotskiy.composition.Domain.entity.Question
+import com.egorpoprotskiy.composition.domain.GameRepository
+import com.egorpoprotskiy.composition.domain.entity.GameSettings
+import com.egorpoprotskiy.composition.domain.entity.Level
+import com.egorpoprotskiy.composition.domain.entity.Question
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

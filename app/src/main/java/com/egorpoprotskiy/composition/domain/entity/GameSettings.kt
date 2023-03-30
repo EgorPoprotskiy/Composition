@@ -1,9 +1,7 @@
-package com.egorpoprotskiy.composition.Domain.entity
+package com.egorpoprotskiy.composition.domain.entity
 
-import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.io.Serializable
 
 //1.1.1.4 Создание сущности GameSettings
 //Аннотация для того, чтобы не пришлось переопределять все методы вручную, при указании интерфейса Parcelable
@@ -18,3 +16,11 @@ data class GameSettings(
     //время игры в секундах
     val gameTimeInSeconds: Int
 ): Parcelable
+//{
+    //13.4 Объявить строковую переменную, чтобы их можно было вставить в поле text в макете
+//    val minCountOfRightAnswersString: String
+//        get() = minCountOfRightAnswers.toString()
+
+//    val minPercentOfRightAnswersString: String
+//        get() = minPercentOfRightAnswers.toString()
+//}

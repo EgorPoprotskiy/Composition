@@ -1,4 +1,4 @@
-package com.egorpoprotskiy.composition.Presentation
+package com.egorpoprotskiy.composition.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

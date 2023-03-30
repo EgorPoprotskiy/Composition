@@ -1,4 +1,4 @@
-package com.egorpoprotskiy.composition.Domain.entity
+package com.egorpoprotskiy.composition.domain.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

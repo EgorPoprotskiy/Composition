@@ -1,8 +1,7 @@
-package com.egorpoprotskiy.composition.Domain.entity
+package com.egorpoprotskiy.composition.domain.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.io.Serializable
 
 //1.1.1.3 Создание сущности GameResult
 //Аннотация для того, чтобы не пришлось переопределять все методы вручную, при указании интерфейса Parcelable
@@ -17,3 +16,7 @@ data class GameResult(
     //настройки игры
     val gameSettings: GameSettings
 ): Parcelable
+//{
+//    val countOfRightAnswersString: String
+//        get() = countOfRightAnswers.toString()
+//}
