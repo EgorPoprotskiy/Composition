@@ -1,14 +1,12 @@
-package com.egorpoprotskiy.composition.Presentation
+package com.egorpoprotskiy.composition.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.egorpoprotskiy.composition.Domain.entity.Level
-import com.egorpoprotskiy.composition.R
+import com.egorpoprotskiy.composition.domain.entity.Level
 import com.egorpoprotskiy.composition.databinding.FragmentChooseLevelBinding
 
 class ChooseLevelFragment : Fragment() {

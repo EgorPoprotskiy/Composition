@@ -1,4 +1,4 @@
-package com.egorpoprotskiy.composition.Presentation
+package com.egorpoprotskiy.composition.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.egorpoprotskiy.composition.Domain.entity
+package com.egorpoprotskiy.composition.domain.entity
 
 //1.1.1.2 Создание сущности Question
 data class Question(

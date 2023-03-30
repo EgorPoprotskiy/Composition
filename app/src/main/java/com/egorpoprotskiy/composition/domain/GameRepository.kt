@@ -1,8 +1,8 @@
-package com.egorpoprotskiy.composition.Domain
+package com.egorpoprotskiy.composition.domain
 
-import com.egorpoprotskiy.composition.Domain.entity.GameSettings
-import com.egorpoprotskiy.composition.Domain.entity.Level
-import com.egorpoprotskiy.composition.Domain.entity.Question
+import com.egorpoprotskiy.composition.domain.entity.GameSettings
+import com.egorpoprotskiy.composition.domain.entity.Level
+import com.egorpoprotskiy.composition.domain.entity.Question
 //2.1 СОздание репозитория, который будет иметь 2 метода
 interface GameRepository {
     //2.1 Метод, генерирующий вопрос и возвращающий его

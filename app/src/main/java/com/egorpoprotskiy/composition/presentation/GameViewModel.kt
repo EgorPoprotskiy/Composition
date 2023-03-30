@@ -1,18 +1,17 @@
-package com.egorpoprotskiy.composition.Presentation
+package com.egorpoprotskiy.composition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.egorpoprotskiy.composition.Data.GameRepositoryImpl
-import com.egorpoprotskiy.composition.Domain.entity.GameResult
-import com.egorpoprotskiy.composition.Domain.entity.GameSettings
-import com.egorpoprotskiy.composition.Domain.entity.Level
-import com.egorpoprotskiy.composition.Domain.entity.Question
-import com.egorpoprotskiy.composition.Domain.usecases.GenerateQuestionUseCase
-import com.egorpoprotskiy.composition.Domain.usecases.GetGameSettingsUseCase
+import com.egorpoprotskiy.composition.data.GameRepositoryImpl
+import com.egorpoprotskiy.composition.domain.entity.GameResult
+import com.egorpoprotskiy.composition.domain.entity.GameSettings
+import com.egorpoprotskiy.composition.domain.entity.Level
+import com.egorpoprotskiy.composition.domain.entity.Question
+import com.egorpoprotskiy.composition.domain.usecases.GenerateQuestionUseCase
+import com.egorpoprotskiy.composition.domain.usecases.GetGameSettingsUseCase
 import com.egorpoprotskiy.composition.R
 //Наследование от AndroidViewModel для того, чтобы можно было получить строку из строковых ресурсов в методе updateProgress()
 class GameViewModel(
